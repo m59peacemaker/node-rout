@@ -2,7 +2,7 @@
 
 Middleware style router with configurable pattern matching/parsing, vhost and namespacing.
 
-![Gaffgarion](https://raw.githubusercontent.com/m59peacemaker/node-rout/master/ff-tactics-route.png "Gaffgarion")
+![Gaffgarion](https://raw.githubusercontent.com/m59peacemaker/node-rout/master/ff-tactics-rout.png "Gaffgarion")
 
 ## Install
 ```

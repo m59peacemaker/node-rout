@@ -6,7 +6,7 @@ Middleware style router with configurable pattern matching/parsing, vhost and na
 
 ## Install
 ```
-npm install node-route
+npm install rout
 ```
 
 ## Y!?

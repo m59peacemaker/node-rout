@@ -1,6 +1,6 @@
 {
   "name": "rout",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Middleware style router with configurable pattern matching/parsing, vhost and namespacing.",
   "keywords": [
     "router",

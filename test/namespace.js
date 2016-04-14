@@ -2,32 +2,16 @@ var test = require('tape');
 var Router = require('./common/Router');
 var req = require('./common/req');
 
-test("namespace doesn't modify original router's state", function(t) {
+test('namespace works', function(t) {
   t.plan(1);
-  var router = Router();
-
-  var subRouter = Router();
-  subRouter.get('/bar', function() {});
-
-  router.all(router.namespace('/foo', subRouter));
-
-  t.equal(subRouter.routes[0].pattern, '/bar');
-});
-
-test('namespace applies to routes without patterns', function(t) {
-  t.plan(1);
-  var router = Router();
-
-  var subRouter = Router();
-  subRouter.all(t.fail);
-
-  var subRouter2 = Router();
-  subRouter2.all(t.pass);
-
-  router.all('/foo', subRouter);
-  router.all('/bar', subRouter2);
-
-  router(req('/bar'));
+  var router = new Router();
+  var subRouter = new Router();
+  subRouter.get('/:foo/:bar', function(req, res, next, params) {
+    t.deepEqual(params, {foo: 'c', bar: 'd'});
+  });
+  router.get(router.namespace('/ick/:ick', subRouter));
+  router.get('/a/b/c/d', t.fail.bind(null, "subRouter was not used"));
+  router(req('/a/b/c/d'));
 });
 
 test('sub router can be used in multiple namespaces', function(t) {
@@ -42,21 +26,6 @@ test('sub router can be used in multiple namespaces', function(t) {
 
   router(req('/foo/bar'));
   router(req('/qux/bar'));
-});
-
-test('sub router receives params from namespace string', function(t) {
-  t.plan(2);
-  var router = Router();
-
-  var subRouter = Router();
-  subRouter.get('/bar/:barThing', function(req, res, next, params) {
-    t.equal(params.thing, 'foo');
-    t.equal(params.barThing, 'baz');
-  });
-
-  router.all(router.namespace('/:thing', subRouter));
-
-  router(req('/foo/bar/baz'));
 });
 
 test('sub router can be used with and without namespace at the same time', function(t) {

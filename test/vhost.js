@@ -46,7 +46,7 @@ test('vhost receives params', function(t) {
   router(rek);
 });
 
-test('vhost work with data object', function(t) {
+test('vhost works with data object', function(t) {
   t.plan(2);
   var router = Router();
   router.all(function(req, res, next, params, data) {

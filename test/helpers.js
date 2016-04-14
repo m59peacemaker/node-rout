@@ -2,13 +2,17 @@ var test = require('tape');
 var Router = require('./common/Router');
 var req = require('./common/req');
 
-test('helper adds route', function(t) {
-  t.plan(1);
-  var router = Router();
-  router.get(function() {});
-  t.true(router.routes.length === 1);
+['get', 'post', 'put', 'patch', 'delete', 'options', 'all'].forEach(function(method) {
+  test('Method: "'+method+'" handles requests', function(t) {
+    t.plan(1);
+    var router = Router();
+    router[method]('/foo', function() {
+      t.pass();
+    });
+    router();
+  });
 });
-
+/*
 test('helper adds basic route w/ pattern', function(t) {
   t.plan(3);
   var router = Router();
@@ -55,4 +59,4 @@ test('helper adds all method route w/o pattern', function(t) {
   t.false(route.hasOwnProperty(route.method));
   t.false(route.hasOwnProperty(route.method));
   t.true(typeof route.handler === 'function');
-});
+});*/

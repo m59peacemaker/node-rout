@@ -7,7 +7,7 @@ test('works when passed as middleware', function(t) {
 
   function useMiddleware(mw) {
     // call the middleware with req res, next
-    mw({url: '/', method: 'GET'}, 'res', t.pass);
+    mw(req('/'), 'res', t.pass);
   }
 
   var router = Router();
@@ -16,10 +16,11 @@ test('works when passed as middleware', function(t) {
     t.equal(res, 'res');
     next();
   });
+
   useMiddleware(router);
 });
 
-test('helper runs middleware', function(t) {
+test('runs middleware', function(t) {
   t.plan(3);
 
   function middleware(req, res, next) {
@@ -30,15 +31,17 @@ test('helper runs middleware', function(t) {
 
   var router = Router();
   router.all(middleware);
-  router.all(t.pass);
+  router.get(t.pass);
 
   router(req('/foo'), 'res');
 });
 
+
+// this is not a namespace test!
+// the subRouter still receives and acts on the full req.url
 test('works nested', function(t) {
   t.plan(2);
 
-  // this is not a namespace test!
   var subRouter = Router();
   // shouldn't be used because it isn't /foo
   subRouter.get('/bar', t.fail);
@@ -47,12 +50,16 @@ test('works nested', function(t) {
   subRouter.get('/foo/*', t.pass);
 
   var router = Router();
+
   // send /foo or /foo/* to subRouter
   router.all('/foo(/*)', subRouter);
 
+  // will fail if picked up by subrouter
   router(req('/bar'));
+
   // should be picked up by /foo subRouter
   router(req('/foo'));
+
   // should be picked up by /foo/* subRouter
   router(req('/foo/fooz'));
 });

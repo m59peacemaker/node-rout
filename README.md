@@ -1,3 +1,7 @@
+## Don't Use This
+
+I want to improve this router one day. Meanwhile, I think it's bad. Don't use it.
+
 # Rout
 
 Middleware style router with configurable pattern matching/parsing, vhost and namespacing.
@@ -14,7 +18,6 @@ npm install rout
 Why did I add to npm's 2526 packages that match the search "router"?
 
 - Mostly because every other router I know of has a built-in parser. That bothers me.
-- A lot of routers don't make their state (routes) available to the outside world. Does it matter? Better safe than sorry. Internal state is bad enough anyway.
 
 ## Usage
 
@@ -29,7 +32,6 @@ var Router = require('rout').bind(null, parser);
 // create a router instance
 var router = new Router();
 
-// add a route (there are other ways to do this)
 router.get('/foo', function(req, res) {
   res.end('foo');
 });
@@ -60,47 +62,7 @@ Pass in an array of routes to set initial state.
 
 This function modifies the pattern that will be passed to the parser. The return value is the pattern that will be used by the parser.
 
-## Manual route creation
-
-A route can be a handler function or an object with the properties `method`, `pattern` and `handler`.
-
-```javascript
-var routes = [
-  // handler for all requests
-  function(req, res, next) {
-    console.log(req.url);
-    next();
-  },
-  // basic route
-  {
-    method: 'get',
-    pattern: '/foo/:id',
-    handler: function(req, res, next, params) { res.end('foo: '+params.id); }
-  },
-];
-```
-
-#### method
-
-The http method of the request. Not case-sensitive.
-
-If not present or falsy, the route will match all methods.
-
-#### pattern
-
-The pattern to test the request url against.
-
-If not present or falsy, the route will match all urls.
-
-#### handler(req, res, next, params, data)
-
-- req    - request object
-- res    - response object
-- next   - callback to continue to the next matching route, optionally passing data to that route handler
-- params - url parameters
-- data   - a data object that persists across handlers for a request
-
-## Helpers / route generation
+## Adding Routes
 
 #### router\[method](pattern, handler), router\[method](handler)
 
@@ -120,6 +82,20 @@ router.post('/foo', function(req, res) {
   res.end();
 });
 ```
+
+#### pattern
+
+The pattern to test the request url against.
+
+If not present or falsy, the route will match all urls.
+
+#### handler(req, res, next, params, data)
+
+- req    - request object
+- res    - response object
+- next   - callback to continue to the next matching route, optionally passing data to that route handler
+- params - url parameters
+- data   - a data object that persists across handlers for a request
 
 ## router.routes
 

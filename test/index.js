@@ -1,5 +1,4 @@
-require('./manual');
-require('./helpers');
+require('./general');
 require('./as-middleware');
-require('./vhost');
 require('./namespace');
+require('./vhost');
